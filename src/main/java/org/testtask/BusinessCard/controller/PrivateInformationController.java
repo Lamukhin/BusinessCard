@@ -7,25 +7,28 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.testtask.BusinessCard.db.entity.CommonInfoEntity;
-import org.testtask.BusinessCard.db.entity.FullContactsEntity;
-import org.testtask.BusinessCard.db.repo.CommonInfoRepo;
-import org.testtask.BusinessCard.db.repo.FullContactsRepo;
-
-import java.io.File;
-import java.util.List;
-
+import org.springframework.web.bind.annotation.PostMapping;
+import org.testtask.BusinessCard.exception.NothingFoundException;
+import org.testtask.BusinessCard.service.interfaces.MyInfoService;
 
 @Controller
 @RequiredArgsConstructor
 public class PrivateInformationController {
 
+    private final MyInfoService myInfoService;
+
     @GetMapping("/")
     public ResponseEntity<String> getMyInfo() {
-        //TODO
-        return null;
+        ResponseEntity<String> response;
+        try {
+            response = ResponseEntity.ok(myInfoService.getMyFullInfo());
+        } catch (NothingFoundException ex){
+            return new ResponseEntity<>(ex.getMessageForUser(), HttpStatus.BAD_REQUEST);
+        } catch (RuntimeException ex){
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return response;
     }
+
 
 }
