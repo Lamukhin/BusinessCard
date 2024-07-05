@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: BusinessCard
+
+  datasource:
+    url: jdbc:postgresql://localhost:5433/businesscard
+    username: postgres
+    password: SomePassword1997
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
