@@ -1,0 +1,1 @@
+ALTER TABLE common_info ALTER COLUMN date_of_birth TYPE varchar(30);
