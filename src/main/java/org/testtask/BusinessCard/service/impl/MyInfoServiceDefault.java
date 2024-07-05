@@ -17,6 +17,8 @@ import org.testtask.BusinessCard.util.MapperUtil;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.PathMatcher;
 import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.List;
@@ -39,8 +41,9 @@ public class MyInfoServiceDefault implements MyInfoService {
         String base64Photo = null;
         if (commonInfo.get(0).getPhotoUrl() != null){
             try {
-                base64Photo = Base64.getEncoder().encodeToString(Files.readAllBytes((Paths.get("/pic/my_photo.jpg"))));
+                base64Photo = Base64.getEncoder().encodeToString(Files.readAllBytes((Paths.get("src/main/resources/static/my_photo.jpg"))));
             } catch (IOException ex) {
+                log.error("Не удалось преобразовать картинку в base64: {}", ex.getMessage());
                 throw new RuntimeException("Не удалось преобразовать картинку в base64!", ex);
             }
         }
@@ -51,6 +54,7 @@ public class MyInfoServiceDefault implements MyInfoService {
         try{
             finalJson = objectMapper.writeValueAsString(allMyInfoDto);
         } catch (IOException ex) {
+            log.error("Не удалось преобразовать объект AllMyInfoDto в String: {}", ex.getMessage());
             throw new RuntimeException("Не удалось преобразовать объект AllMyInfoDto в String", ex);
         }
         return finalJson;
